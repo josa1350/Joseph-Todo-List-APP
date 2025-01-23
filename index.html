@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY-TODO-APP</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, orangered 50%, blue 50%);
+        }
+        .container{
+            width: 100%;
+            min-height: 100vh;
+            padding: 10px;
+
+        }
+        .todoapp{
+            width: 100%;
+            max-width: 400px;
+            background-color: pink;
+            box-shadow: 12px 15px 20px rgb(99, 89, 99);
+            padding: 40px 30px 70px;
+            margin: 100px auto 20px;
+            border-radius: 10px;
+        }
+        .todoapp h2{
+            color: #002765;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: inherit;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            
+        }
+        input{
+            flex: 1;
+            border: none;
+            outline: none;
+            background: inherit;
+            font-size: 1.2rem;
+            font-weight: 14px;
+            text-transform: capitalize;
+        }
+        button{
+            
+            border: none;
+            outline: none;
+            padding: 16px 50px;
+            background: green;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 40px;
+        }
+        ul li{
+            position: relative;
+            list-style: upper-alpha;
+            font-size: 1rem ;
+            padding: 12px 8px 12px 50px;
+            user-select: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        ul li::before{
+            
+            position: absolute;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background-image: url();
+            background-position: center;
+            background-size: cover;
+            top: 12px;
+            left: 8px;
+        }
+        ul li:hover{
+            background-color: green;
+        }
+        ul li .checked{
+            color: #555;
+            text-decoration: line-through;
+        }
+        ul li span{
+            position: absolute;
+            right: 0;
+            top: 5px;
+            width: 40px;
+            height: 40px;
+            font-size: 22px;
+            color: #555;
+            line-height: 40px;
+            text-align: center;
+
+        }
+        ul li  span:hover{
+            background-color: red;
+            border-radius: 50%;
+        }
+        button:hover{
+            background-color: #fff;
+            transition: 1.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+                <div class="todoapp">
+                    <h2>TODO-LIST-APP</h2>
+                    <div class="row">
+                        <input type="text" placeholder="Add Task" id="inputbox" onkeydown="pressIt(event)" />
+                        <button  onclick="Add()">Add</button>
+                    </div>
+                    <ul id="lists">
+                        <li class="checked"></li>
+                        <!-- <li>Task2</li>
+                        <li>Task3</li> -->
+                    </ul>
+
+                </div>
+    </div>
+
+    <script>
+        const inputs = document.getElementById("inputbox");
+        const lists = document.getElementById("lists");
+        const  pressIt = (event) =>{
+            if(event.key === 'Enter'){Add()}
+        }
+    
+        function Add(){
+             if(inputs.value === ''){
+                alert('PLEASE ENTER TASK');
+             }
+             else{
+                let li = document.createElement("li");
+                li.innerHTML = inputs.value;
+                lists.appendChild(li)
+
+                let span = document.createElement("span");
+                span.innerHTML = "Del";
+                span.title = 'Delete';
+                li.appendChild(span);
+             }
+             inputs.value = '';
+             saveData();
+        }
+
+
+        lists.addEventListener("click", function(e){
+            if(e.target.tagName === "LI"){
+                e.target.classList.toggle("checked");
+                saveData();
+            }
+            else if(e.target.tagName === "SPAN"){
+                e.target.parentElement.remove();
+                saveData();
+            }
+        }, false);
+
+        function saveData(){
+            localStorage.setItem("data", lists.innerHTML);
+        }
+
+        function showTask(){
+            lists.innerHTML = localStorage.getItem("data")
+        }
+        showTask();
+
+
+    </script>
+</body>
+</html>
